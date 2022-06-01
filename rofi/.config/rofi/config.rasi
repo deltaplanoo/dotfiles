@@ -1,0 +1,6 @@
+configuration {
+        modi: "window,drun,combi";
+        font: "Hack Regular 12";
+        combi-modi: "window,drun";
+}
+@theme "gruvbox-dark-soft"
