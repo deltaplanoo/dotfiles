@@ -158,7 +158,7 @@ for_window [class="^.*"] border pixel 0
 #################################
 
 exec_always --no-startup-id feh --bg-fill /home/delta/Downloads/back.png
-exec libinput-gestures
+exec_always libinput-gestures -c /home/delta/.config/libinput-gestures.conf
 exec xinput --set-prop "ELAN2602:00 04F3:3109 Touchpad" "libinput Tapping Enabled" 1
 exec xinput --set-prop "ELAN2602:00 04F3:3109 Touchpad" "libinput Natural Scrolling Enabled" 1
 # exec compton -b -f -D 4
