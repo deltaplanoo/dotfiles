@@ -79,11 +79,17 @@ myawesomemenu = {
    { "edit config", editor_cmd .. " " .. awesome.conffile },
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end },
-   { "shutdown", function() awful.spawn.with_shell("shutdown now") end} 
+}
+
+mysessionmenu = {
+	{ "shutdown", function() awful.spawn.with_shell("shutdown now") end },
+	{ "lock", function() awful.util.spawn("slock") end },
+	{ "quit", function() awesome.quit() end }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", terminal }
+                                    { "open terminal", terminal },
+									{ "session", mysessionmenu }
                                   }
                         })
 
@@ -325,12 +331,20 @@ globalkeys = gears.table.join(
               end,
               {description = "restore minimized", group = "client"}),
 
+	-- Lock
+	awful.key({ modkey }, "l",
+		function ()
+			awful.util.spawn("slock") end,
+			{description = "lock the screen"}),
+
     -- Prompt
-    awful.key({ modkey },            "d",     function () awful.spawn.with_shell("rofi -modi run -show-icons -show run -theme-str 'window {width: 30%;}' &>> /tmp/rofi.log") end,
+    awful.key({ modkey }, "d",
+		function ()
+			awful.spawn.with_shell("rofi -modi run -show-icons -show run -theme-str 'window {width: 30%;}' &>> /tmp/rofi.log") end,
               {description = "run rofi", group = "launcher"}),
 
     awful.key({ modkey }, "x",
-              function ()
+		function ()
                   awful.prompt.run {
                     prompt       = "Run Lua code: ",
                     textbox      = awful.screen.focused().mypromptbox.widget,
