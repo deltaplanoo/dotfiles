@@ -17,6 +17,20 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+local date = wibox.widget {
+    font = "Hack NF Bold 10",
+    format = ' %a %d %b %Y ',
+    align = "center",
+    valign = "center",
+    widget = wibox.widget.textclock
+}
+local clock = wibox.widget {
+    font = "Hack NF Bold 10",
+    format = ' %R ',
+    align = "center",
+    valign = "center",
+    widget = wibox.widget.textclock
+}
 local theme_path = "/home/delta/dotfiles/awesome/.config/awesome/themes/"
 
 -- {{{ ERROR HANDLING
@@ -209,12 +223,13 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
 		-- Middle widget
-			mytextclock,
+			clock,
 		{ -- Right widgets
             layout = wibox.layout.fixed.horizontal,
             s.mytasklist,
             -- mykeyboardlayout,
             -- wibox.widget.systray(),
+            date,
 			s.mylayoutbox,
         },
     }
@@ -321,16 +336,15 @@ globalkeys = gears.table.join(
               {description = "select previous", group = "layout"}),
 
     awful.key({ modkey, "Control" }, "n",
-              function ()
-                  local c = awful.client.restore()
-                  -- Focus restored client
-                  if c then
-                    c:emit_signal(
-                        "request::activate", "key.unminimize", {raise = true}
-                    )
-                  end
-              end,
-              {description = "restore minimized", group = "client"}),
+        function ()
+            local c = awful.client.restore()
+            -- Focus restored client
+            if c then
+                c:emit_signal("request::activate", "key.unminimize", {raise = true})
+            end
+        end,
+              {description = "restore minimized", group = "client"}
+    ),
 
 	-- Lock
 	awful.key({ modkey }, "l",
@@ -360,6 +374,27 @@ globalkeys = gears.table.join(
             awful.util.spawn("flameshot gui")
         end,
               {description = "take a screenshot", group = "launcher"}
+    ),
+    -- Volume and Mic Control
+    awful.key({}, "XF86AudioRaiseVolume",
+        function()
+            awful.util.spawn("pactl set-sink-volume @DEFAULT_SINK@ +10%")
+        end
+    ),
+    awful.key({}, "XF86AudioLowerVolume",
+        function()
+            awful.util.spawn("pactl set-sink-volume @DEFAULT_SINK@ -10%")
+        end
+    ),
+    awful.key({}, "XF86AudioMute",
+        function()
+            awful.util.spawn("pactl set-sink-mute @DEFAULT_SINK@ toggle")
+        end
+    ),
+    awful.key({}, "XF86AudioMicMute",
+        function()
+            awful.util.spawn("pactl set-source-mute @DEFAULT_SOURCE@ toggle")
+        end
     )
 )
 
@@ -424,16 +459,6 @@ for i = 1, 9 do
                         end
                   end,
                   {description = "view tag #"..i, group = "tag"}),
-        -- Toggle tag display.
-        awful.key({ modkey, "Control" }, "#" .. i + 9,
-                  function ()
-                      local screen = awful.screen.focused()
-                      local tag = screen.tags[i]
-                      if tag then
-                         awful.tag.viewtoggle(tag)
-                      end
-                  end,
-                  {description = "toggle tag #" .. i, group = "tag"}),
         -- Move client to tag.
         awful.key({ modkey, "Shift" }, "#" .. i + 9,
                   function ()
@@ -444,18 +469,7 @@ for i = 1, 9 do
                           end
                      end
                   end,
-                  {description = "move focused client to tag #"..i, group = "tag"}),
-        -- Toggle tag on focused client.
-        awful.key({ modkey, "Control", "Shift" }, "#" .. i + 9,
-                  function ()
-                      if client.focus then
-                          local tag = client.focus.screen.tags[i]
-                          if tag then
-                              client.focus:toggle_tag(tag)
-                          end
-                      end
-                  end,
-                  {description = "toggle focused client on tag #" .. i, group = "tag"})
+                  {description = "move focused client to tag #"..i, group = "tag"})
     )
 end
 
