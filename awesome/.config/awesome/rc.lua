@@ -17,8 +17,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
-
-require("autostart")
+-- require("autostart")
+local mybattery = require("battery")
 
 local date = wibox.widget {
     font = "Hack NF Bold 10",
@@ -232,6 +232,7 @@ awful.screen.connect_for_each_screen(function(s)
             s.mytasklist,
             -- mykeyboardlayout,
             -- wibox.widget.systray(),
+            mybattery.text,
             date,
 			s.mylayoutbox,
         },
