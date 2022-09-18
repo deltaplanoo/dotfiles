@@ -8,7 +8,7 @@ set softtabstop=4
 set mouse=a
 set termguicolors
 " set background=dark
-colorscheme gruvbox
+" colorscheme gruvbox
 set encoding=UTF-8
 
 call plug#begin()
@@ -17,7 +17,8 @@ Plug 'https://github.com/vim-airline/vim-airline'		" Status bar
 Plug 'https://github.com/preservim/nerdtree'			" NerdTree
 Plug 'https://github.com/ryanoasis/vim-devicons'		" Developer Icons
 Plug 'https://github.com/tc50cal/vim-terminal'			" Vim Terminal
-Plug 'ellisonleao/gruvbox.nvim'							" Gruvbox theme
+" Plug 'ellisonleao/gruvbox.nvim'						" Gruvbox theme
+Plug 'Mofiqul/dracula.nvim'								" Dracula theme
 Plug 'mhinz/vim-startify'								" Start screen
 Plug 'norcalli/nvim-colorizer.lua'						" Color previewer
 Plug 'Yggdroot/indentLine'								" Visual guide
@@ -33,7 +34,7 @@ set encoding=UTF-8
 
 call plug#end()
 
-lua require'colorizer'.setup()
+lua require 'colorizer'.setup()
 
 let g:NERDTreeDirArrowExpandable="+"
 let g:NERDTreeDirArrowCollapsible="~"
